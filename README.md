@@ -138,3 +138,7 @@ returns the current known state of the speakers. see [speaker state](#Speaker-/-
 
 `state` when we get a new state ( or any state if you set the [option](#options) )
 
+
+
+# thanks
+- https://github.com/Gronis/pykef
