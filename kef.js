@@ -211,7 +211,7 @@ class KEF extends EventEmitter {
     }
 
     // sets state and emits event
-    setSocketState(state, data) {
+    setSocketState(socketState, data) {
         this.socketState = socketState;
         this.emit(socketState, data);
     }
