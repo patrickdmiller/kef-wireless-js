@@ -191,7 +191,11 @@ class KEF extends EventEmitter {
     end() {
         // if you call this you don't want it to reconnect
         this.retry = false;
-        this.socket.end();
+        //only end it if it's connected or connecting. socket has a .connected attribute but not connected?
+        if(this.socket.connecting || this.socketState == SOCKET_STATES.CONNECTED){
+            this.socket.end();
+        }
+        
     }
 
     getVolume(cb = function () {}) {
