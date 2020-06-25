@@ -1,7 +1,7 @@
 {
     "name": "kef-wireless-js",
     "description": "control kef wireless speaker. tested with ls50w",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": [
         "kef",
         "ls50",
@@ -9,6 +9,5 @@
     ],
     "main": "kef.js",
     "repository": "git://github.com/patrickdmiller/kef-wireless-js",
-    "dependencies": {
-    }
+    "dependencies": {}
 }
