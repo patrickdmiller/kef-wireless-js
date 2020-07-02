@@ -106,6 +106,9 @@ equivilent to pressing the mute button.
 ### `turnOnOrSwitchSource(source, cb)`
 switch source. If off, speakers will turn on to the passed source. valid source values are ('AUX', 'WIFI', 'BT', 'USB', 'OPT'). 
 
+### `cycleSource(cb)`
+if the speakers are on and we know what source we're on, this will move to the next source.  
+
 ### `turnOff(cb)`
 equivilent to pressing the mute button. 
 

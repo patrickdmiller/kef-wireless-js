@@ -43,6 +43,9 @@ const ON_INPUT_FLAG = {
     0x1B: 'OPT'
 }
 
+//order is used to cycle sources
+const SOURCES = ['WIFI', 'BT', 'AUX', 'OPT', 'USB'];
+
 /*  This is event based. callbacks to socket messages don't contain the answers, they are just a cb on sending the data to the socket.
     a promise version will be released next. 
 */
@@ -169,6 +172,19 @@ class KEF extends EventEmitter {
         }
     }
 
+    cycleSource(cb = function(){}){
+        //if we know the speakers are on and the state of the speakers
+        if(this.onoff == 1 && this.source!==-1){
+            //index of source
+            let source_i = SOURCES.indexOf(this.source);
+            //get the next source and switch to it.
+            source_i++;
+            this.turnOnOrSwitchSource(SOURCES[source_i % SOURCES.length], cb) 
+        }else{
+            cb("Unable to cycle, Speakers are off or unknown source state")
+        }
+    }
+
     turnOff(cb = function () {}) {
         this.socket.write(Buffer.from(MESSAGES.OFF), cb);
         //it takes about 5 seconds to turn off. I hate set timeout but the speaker will not emit an off so we have to check source 2 seconds later
@@ -196,6 +212,7 @@ class KEF extends EventEmitter {
             cb("Socket is not connected or value out of range " + val)
         }
     }
+    
 
     end(cb = function (){}) {
         // if you call this you don't want it to reconnect
