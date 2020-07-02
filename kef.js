@@ -91,6 +91,8 @@ class KEF extends EventEmitter {
         // just keeps track if it's currently retrying only every have 1 retry in progress
         this.retryFlag = false;
         this.checkingStateFlag = false;
+        this.checkStateLoop = null;
+        this.reconnectLoop = null;
         this.dataCallbackQueue = [];
         this.socket = new net.Socket();
         // this.bindHandlers();
@@ -132,6 +134,9 @@ class KEF extends EventEmitter {
     connect() {
         // if we're connecting, we want to reconnect if it fails or disconnects
         this.retry = true;
+        // invalidate any reconnect retry that's happening
+        clearTimeout(this.reconnectLoop);
+
         this.setSocketState(SOCKET_STATES.CONNECTING)
         this.socket.connect({
             host: this.ip,
@@ -312,7 +317,8 @@ class KEF extends EventEmitter {
         //attempt to reconnect if should retry and not already retrying
         if (this.retry && !this.retryFlag) {
             this.retryFlag = true;
-            setTimeout(() => {
+            clearTimeout(this.reconnectLoop);
+            this.reconnectLoop = setTimeout(() => {
                 // this.socket = new net.Socket();
                 // this.bindHandlers();
                 this.retryFlag = false;
