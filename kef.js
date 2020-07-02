@@ -134,6 +134,7 @@ class KEF extends EventEmitter {
     connect() {
         // if we're connecting, we want to reconnect if it fails or disconnects
         this.retry = true;
+        
         // invalidate any reconnect retry that's happening
         clearTimeout(this.reconnectLoop);
 
@@ -142,6 +143,9 @@ class KEF extends EventEmitter {
             host: this.ip,
             port: this.port
         });
+
+        // we are connecting so we are not retrying anymore. 
+        this.retryFlag = false;
     }
 
     muteToggle(cb = function () {}) {
@@ -193,12 +197,14 @@ class KEF extends EventEmitter {
         }
     }
 
-    end() {
+    end(cb = function (){}) {
         // if you call this you don't want it to reconnect
         this.retry = false;
         //only end it if it's connected or connecting. socket has a .connected attribute but not connected?
         if(this.socket.connecting || this.socketState == SOCKET_STATES.CONNECTED){
-            this.socket.end();
+            this.socket.end(cb);
+        }else{
+            cb();
         }
         
     }
@@ -321,7 +327,6 @@ class KEF extends EventEmitter {
             this.reconnectLoop = setTimeout(() => {
                 // this.socket = new net.Socket();
                 // this.bindHandlers();
-                this.retryFlag = false;
                 this.connect();
             }, this.retryInterval)
         }
