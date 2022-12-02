@@ -5,3 +5,5 @@ curl example to turn the speakers off (in a terminal window), OFF references the
 ```cat OFF | curl telnet://192.168.1.170:50001```
 
 ```cat FILE_NAME | curl telnet://SPEAKER_IP:50001``` 
+
+I don't expect anything bad to happen, but use at your own risk
